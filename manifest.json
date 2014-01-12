@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+    "name": "Pass Free",
+    "version": "0.0.1",
+    
+    "description": "Generate, store, and auto-fill passwords.",
+    "icons": {
+        "16": "img/lock_16.png",
+        "48": "img/lock_48.png",
+        "128": "img/lock_128.png"
+    },
+
+    "background": {
+        "scripts": ["init.js"],
+        "persistent": false
+    },
+
+    "browser_action": {
+        "default_icon": {
+            "19": "img/lock_19.png",
+            "38": "img/lock_38.png"
+        },
+        "default_title": "Pass Free"
+    },
+    "permissions": [
+        "contextMenus",
+        "activeTab"
+    ]
+}
