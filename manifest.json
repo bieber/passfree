@@ -12,8 +12,11 @@
 
     "background": {
         "scripts": [
+            "third_party/aes.js",
             "js/const.js",
             "js/global_state.js",
+            "js/password_management.js",
+            "js/message_dispatch.js",
             "js/init.js"
         ],
         "persistent": false
@@ -24,10 +27,12 @@
             "19": "img/lock_19.png",
             "38": "img/lock_38.png"
         },
-        "default_title": "Pass Free"
+        "default_title": "Pass Free",
+        "default_popup": "html/browser_action_popup.html"
     },
     "permissions": [
         "contextMenus",
-        "activeTab"
+        "activeTab",
+        "storage"
     ]
 }

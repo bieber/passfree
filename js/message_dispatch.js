@@ -17,20 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Icon URIs.
-var UNLOCKED_ICONS = {19: 'img/unlock_19.png', 38: 'img/unlock_38.png'};
-var LOCKED_ICONS = {19: 'img/lock_19.png', 38: 'img/lock_38.png'};
+function portConnector(port) {
+    port.onMessage.addListener(messageHandler);
+    port.onDisconnect.addListener(portDisconnector);
+    ports[port.name] = port;
+}
 
-// Context menu IDs.
-var ROOT_MENU_ID = 'root';
+function portDisconnector(port) {
+    if (port.name in ports) {
+        delete ports[port.name];
+    }
+}
 
-// Database status constants.
-var STATUS_OPEN = 'open';
-var STATUS_CLOSED = 'closed';
-var STATUS_EMPTY = 'empty';
+function messageHandler(message, port) {
+    switch (port.name) {
+    case PORT_STATUS:
+        getStatus(port.postMessage.bind(port));
+        break;
+    }
+}
 
-// Message-passing port names.
-var PORT_STATUS = 'status';
-
-// Object keys for storage.  Using short keys to save space.
-var STORAGE_EXISTS = 'e';
+function attemptMessage(portName, message) {
+    if (portName in ports) {
+        ports[portName].postMessage(message);
+        return true;
+    }
+    return false;
+}

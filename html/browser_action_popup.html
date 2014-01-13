@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>Pass Free</title>
+  </head>
+  <body>
+    <form id="new_form">
+      <label for="create_master_input">Master Password:</label>
+      <input id="create_master_input" type="password" name="master_password">
+      <label for="create_master_input_confirm">Confirm:</label>
+      <input id="create_master_input_confirm" type="password" name="confirm">
+      <input type="button" value="Create Password Database">
+    </form>
+
+    <form id="open_form">
+     <label for="open_master_input">Master Password:</label>
+     <input id="open_master_input" type="password" name="master_password">
+      <input type="button" value="Open Password Database">
+    </form>
+
+    <form id="close_form">
+      <input type="button" value="Close Password Database">
+    </form>
+
+    <form id="delete_form">
+      <input type="button" value="Delete Password Database">
+    </form>
+
+    <script src="../js/const.js"></script>
+    <script src="../js/ui/util.js"></script>
+    <script src="../js/ui/browser_action_popup.js"></script>
+  </body>
+</html>

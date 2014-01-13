@@ -17,20 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Icon URIs.
-var UNLOCKED_ICONS = {19: 'img/unlock_19.png', 38: 'img/unlock_38.png'};
-var LOCKED_ICONS = {19: 'img/lock_19.png', 38: 'img/lock_38.png'};
+function domShow(elem) {
+    elem.style.display="block";
+}
 
-// Context menu IDs.
-var ROOT_MENU_ID = 'root';
-
-// Database status constants.
-var STATUS_OPEN = 'open';
-var STATUS_CLOSED = 'closed';
-var STATUS_EMPTY = 'empty';
-
-// Message-passing port names.
-var PORT_STATUS = 'status';
-
-// Object keys for storage.  Using short keys to save space.
-var STORAGE_EXISTS = 'e';
+function domHide(elem) {
+    elem.style.display="none";
+}

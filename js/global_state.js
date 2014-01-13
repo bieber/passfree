@@ -17,4 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var locked = true;
+var storage = chrome.storage.local;
+var master_password = null;
+var passwords = null;
+
+var ports = {};
