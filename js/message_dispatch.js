@@ -34,6 +34,9 @@ function messageHandler(message, port) {
     case PORT_STATUS:
         getStatus(port.postMessage.bind(port));
         break;
+    case PORT_NEW_SUBMISSION:
+        console.log(message);
+        break;
     }
 }
 

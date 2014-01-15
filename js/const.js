@@ -31,6 +31,8 @@ var STATUS_EMPTY = 'empty';
 
 // Message-passing port names.
 var PORT_STATUS = 'status';
+var PORT_STATUS_MESSAGE = 'status_message';
+var PORT_NEW_SUBMISSION = 'new_submission';
 
 // Object keys for storage.  Using short keys to save space.
 var STORAGE_EXISTS = 'e';
