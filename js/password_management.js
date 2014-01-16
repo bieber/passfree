@@ -18,11 +18,11 @@
  */
 
 function getStatus(responseCallback) {
-    if (passwords === null) {
+    if (db === null) {
         storage.get(
-            STORAGE_EXISTS,
+            '0',
             function (result) {
-                if (STORAGE_EXISTS in result) {
+                if (typeof result === 'string') {
                     responseCallback(STATUS_CLOSED);
                 } else {
                     responseCallback(STATUS_EMPTY);
@@ -32,4 +32,42 @@ function getStatus(responseCallback) {
     } else {
         responseCallback(STATUS_OPEN);
     }
+}
+
+function newDB(passwords) {
+    var masterPassword = passwords.master_password;
+    var confirmPassword = passwords.confirm;
+    if (masterPassword !== confirmPassword) {
+        attemptMessage(PORT_STATUS_MESSAGE, "Passwords must match.");
+        return;
+    }
+
+    encData = CryptoJS.kdf.OpenSSL.execute(
+        masterPassword,
+        CryptoJS.algo.AES.keySize,
+        CryptoJS.algo.AES.ivSize
+    );
+    db = {};
+    db[STORAGE_PASSWORDS] = {};
+    db[STORAGE_SETTINGS] = {};
+    saveDB();
+}
+
+function saveDB() {
+    enc = CryptoJS.AES.encrypt(
+        JSON.stringify(db),
+        encData.key,
+        {iv: encData.iv}
+    );
+    enc.salt = encData.salt;
+    storage.set(
+        {0: enc.toString()},
+        function () {
+            if (chrome.runtime.lastError !== undefined) {
+                attemptMessage(PORT_STATUS_MESSAGE, chrome.runtime.lastError);
+                return;
+            }
+            attemptMessage(PORT_STATUS, STATUS_OPEN);
+        }
+    );
 }

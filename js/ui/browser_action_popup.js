@@ -17,8 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function filterForms(newForm, openForm, closeForm, deleteForm, status) {
+function filterForms(
+    newForm,
+    openForm,
+    closeForm,
+    deleteForm,
+    statusNode,
+    status
+) {
     [newForm, openForm, closeForm].forEach(domHide);
+    domShow(deleteForm);
     switch (status) {
     case STATUS_OPEN:
         domShow(closeForm);
@@ -28,12 +36,14 @@ function filterForms(newForm, openForm, closeForm, deleteForm, status) {
         break;
     case STATUS_EMPTY:
         domShow(newForm);
+        domHide(deleteForm);
         break;
     }
+    statusNode.innerText = '';
 }
 
 function setStatusMessage(message) {
-    this.innerText = message.text;
+    this.innerText = message;
 }
 
 function submitOverPort(port, event) {
@@ -48,6 +58,10 @@ function submitOverPort(port, event) {
     event.preventDefault();
 }
 
+var statusMessageP = document.getElementById('status_message');
+var statusMessagePort = chrome.runtime.connect({name: PORT_STATUS_MESSAGE});
+statusMessagePort.onMessage.addListener(setStatusMessage.bind(statusMessageP));
+
 var newForm = document.getElementById('new_form');
 var openForm = document.getElementById('open_form');
 var closeForm = document.getElementById('close_form');
@@ -55,13 +69,16 @@ var deleteForm = document.getElementById('delete_form');
 
 var statusPort = chrome.runtime.connect({name: PORT_STATUS});
 statusPort.onMessage.addListener(
-    filterForms.bind(null, newForm, openForm, closeForm, deleteForm)
+    filterForms.bind(
+        null,
+        newForm,
+        openForm,
+        closeForm,
+        deleteForm,
+        statusMessageP
+    )
 );
 statusPort.postMessage(true);
-
-var statusMessageP = document.getElementById('status_message');
-var statusMessagePort = chrome.runtime.connect({name: PORT_STATUS_MESSAGE});
-statusMessagePort.onMessage.addListener(setStatusMessage.bind(statusMessageP));
 
 var newSubmissionPort = chrome.runtime.connect({name: PORT_NEW_SUBMISSION});
 newForm.addEventListener(

@@ -18,7 +18,7 @@
  */
 
 var storage = chrome.storage.local;
-var master_password = null;
-var passwords = null;
+var encData = null;
+var db = null;
 
 var ports = {};
