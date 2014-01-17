@@ -17,10 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function addClass(elem, className) {
+    if (!elem.className) {
+        elem.className = className;
+        return;
+    }
+    var classes = elem.className.split(' ');
+    for (var i = 0; i < classes.length; i++) {
+        if (classes[i] === className) {
+            break;
+        }
+    }
+    if (i === classes.length) {
+        elem.className += ' ' + className;
+    }
+}
+
+function removeClass(elem, className) {
+    if (!elem.className) {
+        return;
+    }
+    var classes = elem.className.split(' ');
+    for (var i = 0; i < classes.length; i++) {
+        if (classes[i] === className) {
+            classes.splice(i, 1);
+            break;
+        }
+    }
+    elem.className = classes.join(' ');
+}
+
 function domShow(elem) {
-    elem.style.display="block";
+    removeClass(elem, 'hidden');
 }
 
 function domHide(elem) {
-    elem.style.display="none";
+    addClass(elem, 'hidden');
 }

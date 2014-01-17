@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Pass Free</title>
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
   </head>
   <body>
-    <form id="new_form">
+    <form id="new_form" class="hidden">
       <label for="create_master_input">Master Password:</label>
       <input id="create_master_input" type="password" name="master_password">
       <label for="create_master_input_confirm">Confirm:</label>
@@ -11,17 +13,17 @@
       <input type="submit" value="Create Password Database">
     </form>
 
-    <form id="open_form">
+    <form id="open_form" class="hidden">
      <label for="open_master_input">Master Password:</label>
      <input id="open_master_input" type="password" name="master_password">
       <input type="submit" value="Open Password Database">
     </form>
 
-    <form id="close_form">
+    <form id="close_form" class="hidden">
       <input type="submit" value="Close Password Database">
     </form>
 
-    <form id="delete_form">
+    <form id="delete_form" class="hidden">
       <input type="button" value="Delete Password Database">
     </form>
 

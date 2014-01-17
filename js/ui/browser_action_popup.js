@@ -25,18 +25,18 @@ function filterForms(
     statusNode,
     status
 ) {
-    [newForm, openForm, closeForm].forEach(domHide);
-    domShow(deleteForm);
+    [newForm, openForm, closeForm, deleteForm].forEach(domHide);
     switch (status) {
     case STATUS_OPEN:
         domShow(closeForm);
+        domShow(deleteForm);
         break;
     case STATUS_CLOSED:
         domShow(openForm);
+        domShow(deleteForm);
         break;
     case STATUS_EMPTY:
         domShow(newForm);
-        domHide(deleteForm);
         break;
     }
     statusNode.innerText = '';
