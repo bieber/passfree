@@ -37,6 +37,9 @@ function messageHandler(message, port) {
     case PORT_NEW_SUBMISSION:
         newDB(message);
         break;
+    case PORT_OPEN_SUBMISSION:
+        openDB(message);
+        break;
     }
 }
 

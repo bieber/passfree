@@ -82,6 +82,12 @@ statusPort.postMessage(true);
 
 var newSubmissionPort = chrome.runtime.connect({name: PORT_NEW_SUBMISSION});
 newForm.addEventListener(
-    "submit",
+    'submit',
     submitOverPort.bind(null, newSubmissionPort)
+);
+
+var openSubmissionPort = chrome.runtime.connect({name: PORT_OPEN_SUBMISSION});
+openForm.addEventListener(
+    'submit',
+    submitOverPort.bind(null, openSubmissionPort)
 );

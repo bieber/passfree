@@ -17,23 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function getStatus(responseCallback) {
-    if (db === null) {
-        storage.get(
-            '0',
-            function (result) {
-                if (typeof result === 'string') {
-                    responseCallback(STATUS_CLOSED);
-                } else {
-                    responseCallback(STATUS_EMPTY);
-                }
-            }
-        );
-    } else {
-        responseCallback(STATUS_OPEN);
-    }
-}
-
 function newDB(passwords) {
     var masterPassword = passwords.master_password;
     var confirmPassword = passwords.confirm;
@@ -51,23 +34,4 @@ function newDB(passwords) {
     db[STORAGE_PASSWORDS] = {};
     db[STORAGE_SETTINGS] = {};
     saveDB();
-}
-
-function saveDB() {
-    enc = CryptoJS.AES.encrypt(
-        JSON.stringify(db),
-        encData.key,
-        {iv: encData.iv}
-    );
-    enc.salt = encData.salt;
-    storage.set(
-        {0: enc.toString()},
-        function () {
-            if (chrome.runtime.lastError !== undefined) {
-                attemptMessage(PORT_STATUS_MESSAGE, chrome.runtime.lastError);
-                return;
-            }
-            attemptMessage(PORT_STATUS, STATUS_OPEN);
-        }
-    );
 }
