@@ -82,6 +82,12 @@ function openDB(message, cipherText) {
     }
 }
 
+function closeDB() {
+    encData = null;
+    db = null;
+    attemptMessage(PORT_STATUS, STATUS_CLOSED);
+}
+
 function writeCipherText(cipherText, callback) {
     storage.set({0: cipherText}, callback);
 }

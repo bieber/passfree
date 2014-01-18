@@ -40,6 +40,8 @@ function messageHandler(message, port) {
     case PORT_OPEN_SUBMISSION:
         openDB(message);
         break;
+    case PORT_CLOSE_SUBMISSION:
+        closeDB();
     }
 }
 

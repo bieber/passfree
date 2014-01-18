@@ -34,6 +34,7 @@ var PORT_STATUS = 'status';
 var PORT_STATUS_MESSAGE = 'status_message';
 var PORT_NEW_SUBMISSION = 'new_submission';
 var PORT_OPEN_SUBMISSION = 'open_submission';
+var PORT_CLOSE_SUBMISSION = 'close_submission';
 
 // Object keys for storage.  Using short keys to save space.
 var STORAGE_PASSWORDS = 'p';

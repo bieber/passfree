@@ -86,3 +86,9 @@ openForm.addEventListener(
     'submit',
     submitOverPort.bind(null, openSubmissionPort)
 );
+
+var closeSubmissionPort = chrome.runtime.connect({name: PORT_CLOSE_SUBMISSION});
+closeForm.addEventListener(
+    'submit',
+    submitOverPort.bind(null, closeSubmissionPort)
+);
