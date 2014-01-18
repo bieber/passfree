@@ -25,6 +25,7 @@ function filterForms(
     status
 ) {
     [newForm, openForm, closeForm].forEach(domHide);
+    [newForm, openForm].forEach(clearForm);
     switch (status) {
     case STATUS_OPEN:
         domShow(closeForm);
@@ -41,6 +42,14 @@ function filterForms(
 
 function setStatusMessage(message) {
     this.innerText = message;
+}
+
+function clearForm(form) {
+    for (var i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].type === 'password') {
+            form.elements[i].value = '';
+        }
+    }
 }
 
 function submitOverPort(port, event) {
