@@ -21,19 +21,16 @@ function filterForms(
     newForm,
     openForm,
     closeForm,
-    deleteForm,
     statusNode,
     status
 ) {
-    [newForm, openForm, closeForm, deleteForm].forEach(domHide);
+    [newForm, openForm, closeForm].forEach(domHide);
     switch (status) {
     case STATUS_OPEN:
         domShow(closeForm);
-        domShow(deleteForm);
         break;
     case STATUS_CLOSED:
         domShow(openForm);
-        domShow(deleteForm);
         break;
     case STATUS_EMPTY:
         domShow(newForm);
@@ -65,7 +62,6 @@ statusMessagePort.onMessage.addListener(setStatusMessage.bind(statusMessageP));
 var newForm = document.getElementById('new_form');
 var openForm = document.getElementById('open_form');
 var closeForm = document.getElementById('close_form');
-var deleteForm = document.getElementById('delete_form');
 
 var statusPort = chrome.runtime.connect({name: PORT_STATUS});
 statusPort.onMessage.addListener(
@@ -74,7 +70,6 @@ statusPort.onMessage.addListener(
         newForm,
         openForm,
         closeForm,
-        deleteForm,
         statusMessageP
     )
 );
