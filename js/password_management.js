@@ -17,11 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function newDB(passwords) {
+// [new|save|open|close]DB all accept success and failure callbacks.
+// The success callback takes no arguments, the failure callback will
+// be passed a status message.
+function newDB(passwords, success, failure) {
     var masterPassword = passwords.master_password;
     var confirmPassword = passwords.confirm;
     if (masterPassword !== confirmPassword) {
-        attemptMessage(PORT_STATUS_MESSAGE, "Passwords must match.");
+        failure("Passwords must match.");
         return;
     }
 
@@ -33,5 +36,5 @@ function newDB(passwords) {
     db = {};
     db[STORAGE_PASSWORDS] = {};
     db[STORAGE_SETTINGS] = {};
-    saveDB();
+    saveDB(success, failure);
 }

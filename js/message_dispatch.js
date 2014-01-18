@@ -35,13 +35,24 @@ function messageHandler(message, port) {
         getStatus(port.postMessage.bind(port));
         break;
     case PORT_NEW_SUBMISSION:
-        newDB(message);
+        newDB(
+            message,
+            attemptMessage.bind(null, PORT_STATUS, STATUS_OPEN),
+            attemptMessage.bind(null, PORT_STATUS_MESSAGE)
+        );
         break;
     case PORT_OPEN_SUBMISSION:
-        openDB(message);
+        openDB(
+            message.master_password,
+            attemptMessage.bind(null, PORT_STATUS, STATUS_OPEN),
+            attemptMessage.bind(null, PORT_STATUS_MESSAGE)
+        );
         break;
     case PORT_CLOSE_SUBMISSION:
-        closeDB();
+        closeDB(
+            attemptMessage.bind(null, PORT_STATUS, STATUS_CLOSED),
+            attemptMessage.bind(null, PORT_STATUS_MESSAGE)
+        );
     }
 }
 

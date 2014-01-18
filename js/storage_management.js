@@ -34,8 +34,10 @@ function getStatus(responseCallback) {
     }
 }
 
-// TODO: Separate the UI message-sending code from the storage code
-function saveDB() {
+// [new|save|open|close]DB all accept success and failure callbacks.
+// The success callback takes no arguments, the failure callback will
+// be passed a status message.
+function saveDB(success, failure) {
     enc = CryptoJS.AES.encrypt(
         JSON.stringify(db),
         encData.key,
@@ -46,21 +48,19 @@ function saveDB() {
         enc.toString(),
         function () {
             if (chrome.runtime.lastError !== undefined) {
-                attemptMessage(PORT_STATUS_MESSAGE, chrome.runtime.lastError);
+                failure(chrome.runtime.lastError);
                 return;
             }
-            attemptMessage(PORT_STATUS, STATUS_OPEN);
+            success();
         }
     );
 }
 
-function openDB(message, cipherText) {
-    console.log(message, cipherText);
+function openDB(masterPassword, success, failure, cipherText) {
     if (cipherText === undefined) {
-        readCipherText(openDB.bind(null, message));
+        readCipherText(openDB.bind(null, masterPassword, success, failure));
         return;
     }
-    var masterPassword = message.master_password;
     var salt = CryptoJS.format.OpenSSL.parse(cipherText).salt;
     encData = CryptoJS.kdf.OpenSSL.execute(
         masterPassword,
@@ -75,17 +75,17 @@ function openDB(message, cipherText) {
     ).toString(CryptoJS.enc.Utf8);
     if (clearText === '') {
         encData = null;
-        attemptMessage(PORT_STATUS_MESSAGE, 'Invalid Password');
+        failure('Invalid password.');
     } else {
         db = JSON.parse(clearText);
-        attemptMessage(PORT_STATUS, STATUS_OPEN);
+        success();
     }
 }
 
-function closeDB() {
+function closeDB(success, failure) {
     encData = null;
     db = null;
-    attemptMessage(PORT_STATUS, STATUS_CLOSED);
+    success();
 }
 
 function writeCipherText(cipherText, callback) {
