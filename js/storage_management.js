@@ -18,14 +18,18 @@
  */
 
 function getStatus(responseCallback) {
+    wrappedCallback = function (status) {
+        setBrowserActionIcons(status);
+        responseCallback(status);
+    };
     if (db === null) {
         storage.get(
             '0',
             function (result) {
                 if (typeof result === 'object' && '0' in result) {
-                    responseCallback(STATUS_CLOSED);
+                    wrappedCallback(STATUS_CLOSED);
                 } else {
-                    responseCallback(STATUS_EMPTY);
+                    wrappedCallback(STATUS_EMPTY);
                 }
             }
         );
@@ -75,9 +79,11 @@ function openDB(masterPassword, success, failure, cipherText) {
     ).toString(CryptoJS.enc.Utf8);
     if (clearText === '') {
         encData = null;
+        setBrowserActionIcons(STATUS_CLOSED);
         failure('Invalid password.');
     } else {
         db = JSON.parse(clearText);
+        setBrowserActionIcons(STATUS_OPEN);
         success();
     }
 }
@@ -85,6 +91,7 @@ function openDB(masterPassword, success, failure, cipherText) {
 function closeDB(success, failure) {
     encData = null;
     db = null;
+    setBrowserActionIcons(STATUS_CLOSED);
     success();
 }
 

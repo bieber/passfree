@@ -17,25 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// [new|save|open|close]DB all accept success and failure callbacks.
-// The success callback takes no arguments, the failure callback will
-// be passed a status message.
-function newDB(passwords, success, failure) {
-    var masterPassword = passwords.master_password;
-    var confirmPassword = passwords.confirm;
-    if (masterPassword !== confirmPassword) {
-        failure("Passwords must match.");
-        return;
+function setBrowserActionIcons(status) {
+    var icons = ICONS_LOCKED;
+    if (status === STATUS_OPEN) {
+        icons = ICONS_UNLOCKED;
     }
-
-    encData = CryptoJS.kdf.OpenSSL.execute(
-        masterPassword,
-        CryptoJS.algo.AES.keySize,
-        CryptoJS.algo.AES.ivSize
-    );
-    db = {};
-    db[STORAGE_PASSWORDS] = {};
-    db[STORAGE_SETTINGS] = {};
-    setBrowserActionIcons(STATUS_OPEN);
-    saveDB(success, failure);
+    chrome.browserAction.setIcon({path: icons});
 }

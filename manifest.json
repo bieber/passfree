@@ -15,6 +15,7 @@
             "third_party/aes.js",
             "js/const.js",
             "js/global_state.js",
+            "js/ui/browser_action.js",
             "js/storage_management.js",
             "js/password_management.js",
             "js/message_dispatch.js",
