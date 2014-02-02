@@ -17,6 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+var client = Transceiver.Client();
+
 function filterForms(
     newForm,
     openForm,
@@ -52,7 +54,7 @@ function clearForm(form) {
     }
 }
 
-function submitOverPort(port, event) {
+function submitForm(eventType, event) {
     var data = {};
     var elements = event.target.elements;
     for (var i = 0; i < elements.length; i++) {
@@ -60,20 +62,34 @@ function submitOverPort(port, event) {
             data[elements[i].name] = elements[i].value;
         }
     }
-    port.postMessage(data);
+    client.sendEvent(eventType, data);
     event.preventDefault();
 }
 
 var statusMessageP = document.getElementById('status_message');
-var statusMessagePort = chrome.runtime.connect({name: PORT_STATUS_MESSAGE});
-statusMessagePort.onMessage.addListener(setStatusMessage.bind(statusMessageP));
 
 var newForm = document.getElementById('new_form');
 var openForm = document.getElementById('open_form');
 var closeForm = document.getElementById('close_form');
+newForm.addEventListener(
+    'submit',
+    submitForm.bind(null, EVENT_NEW_DB)
+);
+openForm.addEventListener(
+    'submit',
+    submitForm.bind(null, EVENT_OPEN_DB)
+);
+closeForm.addEventListener(
+    'submit',
+    submitForm.bind(null, EVENT_CLOSE_DB)
+);
 
-var statusPort = chrome.runtime.connect({name: PORT_STATUS});
-statusPort.onMessage.addListener(
+client.addListener(
+    EVENT_STATUS_MESSAGE,
+    function (message) { statusMessageP.innerText = message; }
+);
+client.addListener(
+    EVENT_STATUS,
     filterForms.bind(
         null,
         newForm,
@@ -82,22 +98,4 @@ statusPort.onMessage.addListener(
         statusMessageP
     )
 );
-statusPort.postMessage(true);
-
-var newSubmissionPort = chrome.runtime.connect({name: PORT_NEW_SUBMISSION});
-newForm.addEventListener(
-    'submit',
-    submitOverPort.bind(null, newSubmissionPort)
-);
-
-var openSubmissionPort = chrome.runtime.connect({name: PORT_OPEN_SUBMISSION});
-openForm.addEventListener(
-    'submit',
-    submitOverPort.bind(null, openSubmissionPort)
-);
-
-var closeSubmissionPort = chrome.runtime.connect({name: PORT_CLOSE_SUBMISSION});
-closeForm.addEventListener(
-    'submit',
-    submitOverPort.bind(null, closeSubmissionPort)
-);
+client.sendEvent(EVENT_STATUS, null);
