@@ -21,6 +21,7 @@
 // The success callback takes no arguments, the failure callback will
 // be passed a status message.
 function newDB(passwords, success, failure) {
+    console.log('um hi?');
     var masterPassword = passwords.master_password;
     var confirmPassword = passwords.confirm;
     if (masterPassword !== confirmPassword) {
@@ -36,6 +37,5 @@ function newDB(passwords, success, failure) {
     db = {};
     db[STORAGE_PASSWORDS] = {};
     db[STORAGE_SETTINGS] = {};
-    setBrowserActionIcons(STATUS_OPEN);
     saveDB(success, failure);
 }

@@ -26,7 +26,7 @@ eventServer.addListener(
 eventServer.addListener(
     'new_db',
     function (data) {
-        openDB(
+        newDB(
             data,
             eventServer.sendEvent.bind(eventServer, 'status', STATUS_OPEN),
             eventServer.sendEvent.bind(eventServer, 'status_message')
