@@ -14,10 +14,8 @@
         "scripts": [
             "third_party/aes.js",
             "js/modules/Transceiver.js",
+            "js/modules/DB.js",
             "js/const.js",
-            "js/global_state.js",
-            "js/storage_management.js",
-            "js/password_management.js",
             "js/init_event_server.js"
         ],
         "persistent": false

@@ -29,13 +29,13 @@ function filterForms(
     [newForm, openForm, closeForm].forEach(domHide);
     [newForm, openForm].forEach(clearForm);
     switch (status) {
-    case STATUS_OPEN:
+    case DB.statuses.OPEN:
         domShow(closeForm);
         break;
-    case STATUS_CLOSED:
+    case DB.statuses.CLOSED:
         domShow(openForm);
         break;
-    case STATUS_EMPTY:
+    case DB.statuses.EMPTY:
         domShow(newForm);
         break;
     }

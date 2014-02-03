@@ -18,45 +18,53 @@
  */
 
 var eventServer = Transceiver.Server();
+var errorMessageCallback = function (error) {
+    eventServer.sendEvent('status_message', error.message);
+}
 
 eventServer.addListener(
     'status',
-    getStatus.bind(null, eventServer.sendEvent.bind(eventServer, 'status'))
+    function () {
+        DB.getStatus().then(eventServer.sendEvent.bind(eventServer, 'status'));
+    }
 );
 eventServer.addListener(
     'new_db',
     function (data) {
-        newDB(
-            data,
-            eventServer.sendEvent.bind(eventServer, 'status', STATUS_OPEN),
-            eventServer.sendEvent.bind(eventServer, 'status_message')
+        DB.newDB(data).then(
+            eventServer.sendEvent.bind(eventServer, 'status', DB.statuses.OPEN),
+            errorMessageCallback
         );
     }
 );
 eventServer.addListener(
     'open_db',
     function (data) {
-        openDB(
-            data.master_password,
-            eventServer.sendEvent.bind(eventServer, 'status', STATUS_OPEN),
-            eventServer.sendEvent.bind(eventServer, 'status_message')
+        DB.openDB(data.master_password).then(
+            eventServer.sendEvent.bind(eventServer, 'status', DB.statuses.OPEN),
+            errorMessageCallback
         );
     }
 );
 eventServer.addListener(
     'close_db',
-    closeDB.bind(
-        null,
-        eventServer.sendEvent.bind(eventServer, 'status', STATUS_CLOSED),
-        eventServer.sendEvent.bind(eventServer, 'status_message')
-    )
+    function (data) {
+        DB.closeDB().then(
+            eventServer.sendEvent.bind(
+                eventServer,
+                'status',
+                DB.statuses.CLOSED
+            ),
+            errorMessageCallback
+        );
+    }
 );
 
 eventServer.addIntercept(
     'status',
     function(status) {
         var icons = ICONS_LOCKED;
-        if (status === STATUS_OPEN) {
+        if (status === DB.statuses.OPEN) {
             icons = ICONS_UNLOCKED;
         }
         chrome.browserAction.setIcon({path: icons});

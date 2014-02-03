@@ -33,7 +33,7 @@ var Transceiver = Transceiver || function() {
         }
     }
 
-    return {
+    var module = {
         Server: function() {
             return function () {
                 var ports = [];
@@ -98,4 +98,6 @@ var Transceiver = Transceiver || function() {
             }();
         }
     };
+    Object.freeze(module);
+    return module;
 }();
