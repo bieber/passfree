@@ -20,40 +20,40 @@
 var eventServer = Transceiver.Server();
 
 eventServer.addListener(
-    EVENT_STATUS,
-    getStatus.bind(null, eventServer.sendEvent.bind(eventServer, EVENT_STATUS))
+    'status',
+    getStatus.bind(null, eventServer.sendEvent.bind(eventServer, 'status'))
 );
 eventServer.addListener(
-    EVENT_NEW_DB,
+    'new_db',
     function (data) {
         openDB(
             data,
-            eventServer.sendEvent.bind(eventServer, EVENT_STATUS, STATUS_OPEN),
-            eventServer.sendEvent.bind(eventServer, EVENT_STATUS_MESSAGE)
+            eventServer.sendEvent.bind(eventServer, 'status', STATUS_OPEN),
+            eventServer.sendEvent.bind(eventServer, 'status_message')
         );
     }
 );
 eventServer.addListener(
-    EVENT_OPEN_DB,
+    'open_db',
     function (data) {
         openDB(
             data.master_password,
-            eventServer.sendEvent.bind(eventServer, EVENT_STATUS, STATUS_OPEN),
-            eventServer.sendEvent.bind(eventServer, EVENT_STATUS_MESSAGE)
+            eventServer.sendEvent.bind(eventServer, 'status', STATUS_OPEN),
+            eventServer.sendEvent.bind(eventServer, 'status_message')
         );
     }
 );
 eventServer.addListener(
-    EVENT_CLOSE_DB,
+    'close_db',
     closeDB.bind(
         null,
-        eventServer.sendEvent.bind(eventServer, EVENT_STATUS, STATUS_CLOSED),
-        eventServer.sendEvent.bind(eventServer, EVENT_STATUS_MESSAGE)
+        eventServer.sendEvent.bind(eventServer, 'status', STATUS_CLOSED),
+        eventServer.sendEvent.bind(eventServer, 'status_message')
     )
 );
 
 eventServer.addIntercept(
-    EVENT_STATUS,
+    'status',
     function(status) {
         var icons = ICONS_LOCKED;
         if (status === STATUS_OPEN) {

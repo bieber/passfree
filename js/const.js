@@ -29,13 +29,6 @@ var STATUS_OPEN = 'open';
 var STATUS_CLOSED = 'closed';
 var STATUS_EMPTY = 'empty';
 
-// Message-passing event names.
-var EVENT_STATUS = 'status';
-var EVENT_STATUS_MESSAGE = 'status_message';
-var EVENT_NEW_DB = 'new_db';
-var EVENT_OPEN_DB = 'open_db';
-var EVENT_CLOSE_DB = 'close_db';
-
 // Object keys for storage.  Using short keys to save space.
 var STORAGE_PASSWORDS = 'p';
 var STORAGE_SETTINGS = 's';

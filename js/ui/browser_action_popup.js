@@ -73,23 +73,23 @@ var openForm = document.getElementById('open_form');
 var closeForm = document.getElementById('close_form');
 newForm.addEventListener(
     'submit',
-    submitForm.bind(null, EVENT_NEW_DB)
+    submitForm.bind(null, 'new_db')
 );
 openForm.addEventListener(
     'submit',
-    submitForm.bind(null, EVENT_OPEN_DB)
+    submitForm.bind(null, 'open_db')
 );
 closeForm.addEventListener(
     'submit',
-    submitForm.bind(null, EVENT_CLOSE_DB)
+    submitForm.bind(null, 'close_db')
 );
 
 client.addListener(
-    EVENT_STATUS_MESSAGE,
+    'status_message',
     function (message) { statusMessageP.innerText = message; }
 );
 client.addListener(
-    EVENT_STATUS,
+    'status',
     filterForms.bind(
         null,
         newForm,
@@ -98,4 +98,4 @@ client.addListener(
         statusMessageP
     )
 );
-client.sendEvent(EVENT_STATUS, null);
+client.sendEvent('status', null);
