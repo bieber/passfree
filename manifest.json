@@ -12,6 +12,8 @@
 
     "background": {
         "scripts": [
+            "third_party/promise-0.1.1.min.js",
+            "third_party/react.min.js",
             "third_party/aes.js",
             "js/modules/Transceiver.js",
             "js/modules/DB.js",
