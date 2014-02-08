@@ -63,9 +63,9 @@ eventServer.addListener(
 eventServer.addIntercept(
     'status',
     function(status) {
-        var icons = ICONS_LOCKED;
+        var icons = {19: 'img/lock_19.png', 38: 'img/lock_38.png'};
         if (status === DB.statuses.OPEN) {
-            icons = ICONS_UNLOCKED;
+            icons = {19: 'img/unlock_19.png', 38: 'img/unlock_38.png'};
         }
         chrome.browserAction.setIcon({path: icons});
     }

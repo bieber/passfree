@@ -16,7 +16,6 @@
             "third_party/aes.js",
             "js/modules/Transceiver.js",
             "js/modules/DB.js",
-            "js/const.js",
             "js/init_event_server.js"
         ],
         "persistent": false
