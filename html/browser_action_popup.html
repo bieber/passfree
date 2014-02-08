@@ -5,30 +5,10 @@
     <link rel="stylesheet" type="text/css" href="../css/base.css">
   </head>
   <body>
-    <form id="new_form" class="hidden">
-      <label for="create_master_input">Master Password:</label>
-      <input id="create_master_input" type="password" name="master_password">
-      <label for="create_master_input_confirm">Confirm:</label>
-      <input id="create_master_input_confirm" type="password" name="confirm">
-      <input type="submit" value="Create Password Database">
-    </form>
-
-    <form id="open_form" class="hidden">
-     <label for="open_master_input">Master Password:</label>
-     <input id="open_master_input" type="password" name="master_password">
-      <input type="submit" value="Open Password Database">
-    </form>
-
-    <form id="close_form" class="hidden">
-      <input type="submit" value="Close Password Database">
-    </form>
-
-    <p id="status_message">
-    </p>
-
+    <script src="../third_party/react.min.js"></script>
     <script src="../js/modules/Transceiver.js"></script>
     <script src="../js/modules/DB.js"></script>
-    <script src="../js/ui/util.js"></script>
+    <script src="../js/ui/react/DBManager.react.js"></script>
     <script src="../js/ui/browser_action_popup.js"></script>
   </body>
 </html>
