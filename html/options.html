@@ -6,32 +6,12 @@
     <link rel="stylesheet" type="text/css" href="../css/options.css">
   </head>
   <body>
-    <ul class="horizontal_list" id="nav_list">
-      <li>
-        <a href="" id="nav_passwords">Passwords</a>
-      </li>
-      <li>
-        <a href="" id="nav_templates">Password Templates</a>
-      </li>
-      <li>
-        <a href="" id="nav_settings">Settings</a>
-      </li>
-    </ul>
-
-    <div class="section hidden" id="section_passwords">
-      Passwords Page
-    </div>
-    <div class="section hidden" id="section_templates">
-      Templates Page
-    </div>
-    <div class="section hidden" id="section_settings">
-      Plugin Settings Page
-    </div>
-
-    <script src="../js/const.js"></script>
-    <script src="../js/Transceiver.js"></script>
-    <script src="../js/ui/util.js"></script>
-    <script src="../js/ui/options_util.js"></script>
+    <script src="../third_party/react.min.js"></script>
+    <script src="../js/modules/Transceiver.js"></script>
+    <script src="../js/modules/DB.js"></script>
+    <script src="../js/ui/react/TabbedArea.react.js"></script>
+    <script src="../js/ui/react/DBManager.react.js"></script>
+    <script src="../js/ui/react/Options.react.js"></script>
     <script src="../js/ui/options.js"></script>
   </body>
 </head>
