@@ -72,40 +72,40 @@ var DBManager = DBManager || React.createClass({
             messageLine = React.DOM.p(null, this.state.message);
         }
 
-        var form = React.DOM.span(null );
+        var form = <span />;
         if (this.state.status) {
             var contents = null;
             switch (this.state.status) {
             case DB.statuses.CLOSED:
                 contents = [
-                    React.DOM.label(null, 
-                        " Password: ",
-                        React.DOM.input( {type:"password", name:"master_password"} )
-                    ),
-                    React.DOM.input( {type:"submit", value:"Open Database"} )
+                    <label>
+                        Password:
+                        <input type="password" name="master_password" />
+                    </label>,
+                    <input type="submit" value="Open Database" />
                 ];
                 break;
             case DB.statuses.OPEN:
-                contents = React.DOM.input( {type:"submit", value:"Close Database"} );
+                contents = <input type="submit" value="Close Database" />;
                 break;
             case DB.statuses.EMPTY:
                 contents = [
-                    React.DOM.label(null, 
-                        " Password: ",
-                        React.DOM.input( {type:"password", name:"master_password"} )
-                    ),
-                    React.DOM.label(null, 
-                        " Confirm: ",
-                        React.DOM.input( {type:"password", name:"confirm"} )
-                    ),
-                    React.DOM.input( {type:"submit", value:"Open Database"} )
+                    <label>
+                        Password:
+                        <input type="password" name="master_password" />
+                    </label>,
+                    <label>
+                        Confirm:
+                        <input type="password" name="confirm" />
+                    </label>,
+                    <input type="submit" value="Open Database" />
                 ];
                 break;
             }
 
-            form = React.DOM.form( {onSubmit:this.submitHandler}, contents);
+            form = <form onSubmit={this.submitHandler}>{contents}</form>;
         }
 
-        return React.DOM.div(null, form,messageLine);
+        return <div>{form}{messageLine}</div>;
     }
 });
