@@ -142,7 +142,7 @@ var DBStorage = DBStorage || function () {
         });
     }
 
-    return {
+    var module = {
         methods: methods,
 
         setMethod: setMethod,
@@ -150,4 +150,6 @@ var DBStorage = DBStorage || function () {
         write: writeStorage,
         clear: clearStorage
     };
+    Object.freeze(module);
+    return module;
 }();
