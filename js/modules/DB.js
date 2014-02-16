@@ -31,103 +31,19 @@ var DB = DB || function () {
     };
     Object.freeze(storageKeys);
 
-    var storage = chrome.storage.local;
     var encData = null;
     var db = null;
-
-    var getStorage = function (keys) {
-        return new Promise(function (resolve, reject) {
-            storage.get(
-                keys,
-                function (results) {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError);
-                    } else {
-                        resolve(results);
-                    }
-                }
-            );
-        });
-    };
-
-    var setStorage = function (items) {
-        return new Promise(function (resolve, reject) {
-            storage.set(
-                items,
-                function () {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError);
-                    } else {
-                        resolve();
-                    }
-                }
-            );
-        });
-    };
-
-    var removeStorage = function (keys) {
-        return new Promise(function (resolve, reject) {
-            storage.remove(
-                keys,
-                function () {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError);
-                    } else {
-                        resolve();
-                    }
-                }
-            );
-        });
-    };
-
-    var clearStorage = function () {
-        return new Promise(function (resolve, reject) {
-            storage.clear(function () {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError);
-                } else {
-                    resolve();
-                }
-            });
-        });
-    };
-
-    var readCipherText = function () {
-        return new Promise(function (resolve, reject) {
-            getStorage(null).then(function (values) {
-                if (0 in values) {
-                    resolve(values[0]);
-                } else {
-                    reject(new Error('No cipher text found'));
-                }
-            }).catch(function (error) {
-                reject(error);
-            });
-        });
-        return getStorage(null).then(function (values) { return values[0]; })
-    };
-
-    var writeCipherText = function (cipherText) {
-        return setStorage({0: cipherText});
-    };
-
-    var saveDB = function () {
-        enc = CryptoJS.AES.encrypt(
-            JSON.stringify(db),
-            encData.key,
-            {iv: encData.iv}
-        );
-        enc.salt = encData.salt;
-        return writeCipherText(enc.toString());
-    };
 
     var getStatus = function () {
         return new Promise(function (resolve, reject) {
             if (db === null) {
-                readCipherText().then(
-                    resolve.bind(null, statuses.CLOSED),
-                    resolve.bind(null, statuses.EMPTY)
-                );
+                DBStorage.read().then(function (data) {
+                    if (data !== '') {
+                        resolve(statuses.CLOSED);
+                    } else {
+                        resolve(statuses.EMPTY);
+                    }
+                });
             } else {
                 resolve(statuses.OPEN);
             }
@@ -154,7 +70,7 @@ var DB = DB || function () {
 
     var openDB = function (password) {
         return new Promise(function (resolve, reject) {
-            readCipherText().then(function (cipherText) {
+            DBStorage.read().then(function (cipherText) {
                 var salt = CryptoJS.format.OpenSSL.parse(cipherText).salt;
                 encData = CryptoJS.kdf.OpenSSL.execute(
                     password,
@@ -174,7 +90,7 @@ var DB = DB || function () {
                     db = JSON.parse(clearText);
                     resolve();
                 }
-            }).catch(reject);
+            }).catch(reject.bind(null, new Error('Couldn\'t read database')));
         });
     };
 
@@ -182,6 +98,16 @@ var DB = DB || function () {
         encData = null;
         db = null;
         return Promise.cast(null);
+    };
+
+    var saveDB = function () {
+        enc = CryptoJS.AES.encrypt(
+            JSON.stringify(db),
+            encData.key,
+            {iv: encData.iv}
+        );
+        enc.salt = encData.salt;
+        return DBStorage.write(enc.toString());
     };
 
     var module = {
