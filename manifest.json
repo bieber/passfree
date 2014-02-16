@@ -15,6 +15,7 @@
             "third_party/promise-0.1.1.min.js",
             "third_party/aes.js",
             "js/modules/Transceiver.js",
+            "js/modules/DBStorage.js",
             "js/modules/DB.js",
             "js/init_event_server.js"
         ],
