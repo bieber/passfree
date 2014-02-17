@@ -135,7 +135,7 @@ var DBStorage = DBStorage || function () {
                 storage = chrome.storage[method];
                 writeStorage(data).then(function () {
                     clearStorage(chrome.storage[oldMethod])
-                        .then(accept)
+                        .then(resolve)
                         .catch(reject);
                 }).catch(reject);
             }).catch(reject);
