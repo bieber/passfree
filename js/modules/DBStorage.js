@@ -119,7 +119,11 @@ var DBStorage = DBStorage || function () {
         });
     }
 
-    function setMethod(method) {
+    function getMethod() {
+        return Promise.cast(localStorage['storage_method']);
+    };
+
+    function setMethod(method, transfer) {
         return new Promise(function (resolve, reject) {
             if (!(methodIsValid(method))) {
                 reject(new Error('Invalid storage method'));
@@ -130,21 +134,26 @@ var DBStorage = DBStorage || function () {
             }
 
             var oldMethod = localStorage['storage_method'];
-            readStorage().then(function (data) {
-                localStorage['storage_method'] = method;
-                storage = chrome.storage[method];
-                writeStorage(data).then(function () {
-                    clearStorage(chrome.storage[oldMethod])
-                        .then(resolve)
-                        .catch(reject);
+            if (transfer) {
+                readStorage().then(function (data) {
+                    localStorage['storage_method'] = method;
+                    storage = chrome.storage[method];
+                    writeStorage(data).then(resolve).catch(reject);
                 }).catch(reject);
-            }).catch(reject);
+            } else {
+                DB.closeDB().then(function () {
+                    localStorage['storage_method'] = method;
+                    storage = chrome.storage[method];
+                    resolve(null);
+                });
+            }
         });
     }
 
     var module = {
         methods: methods,
 
+        getMethod: getMethod,
         setMethod: setMethod,
         read: readStorage,
         write: writeStorage,

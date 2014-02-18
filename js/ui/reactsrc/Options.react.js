@@ -38,17 +38,23 @@ var Options = Options || function () {
             this.state.client.sendEvent('status', null);
         },
         render: function () {
-            if (this.state.dbStatus !== DB.statuses.OPEN) {
-                return <DBManager />;
-            }
+            var passwordsTab = this.state.dbStatus === DB.statuses.OPEN ?
+                <p>Passwords</p> :
+                <DBManager />;
+            var passwordTypesTab = this.state.dbStatus === DB.statuses.OPEN ?
+                <p>Password Types</p> :
+                <DBManager />;
 
             return (
                 <Tabs id="options_toplevel">
                     <Tab id="passwords" label="Passwords">
-                        <p>Passwords</p>
+                        {passwordsTab}
+                    </Tab>
+                    <Tab id="password_types" label="Password Types">
+                        {passwordTypesTab}
                     </Tab>
                     <Tab id="settings" label="Settings">
-                        <p>Settings</p>
+                        <StorageSettings />
                     </Tab>
                 </Tabs>
             );

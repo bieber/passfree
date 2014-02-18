@@ -17,7 +17,6 @@
             "js/modules/Transceiver.js",
             "js/modules/DBStorage.js",
             "js/modules/DB.js",
-            "js/modules/Settings.js",
             "js/init_event_server.js"
         ],
         "persistent": false

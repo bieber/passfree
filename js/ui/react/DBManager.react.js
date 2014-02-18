@@ -98,7 +98,7 @@ var DBManager = DBManager || React.createClass({
                         " Confirm: ",
                         React.DOM.input( {type:"password", name:"confirm"} )
                     ),
-                    React.DOM.input( {type:"submit", value:"Open Database"} )
+                    React.DOM.input( {type:"submit", value:"New Database"} )
                 ];
                 break;
             }

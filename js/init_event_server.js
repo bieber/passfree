@@ -18,55 +18,91 @@
  */
 
 var eventServer = Transceiver.Server();
-var errorMessageCallback = function (error) {
-    eventServer.sendEvent('status_message', error.message);
+
+initStatusChangeEvents(eventServer);
+initStorageChangeEvents(eventServer);
+
+function initStatusChangeEvents(eventServer) {
+    var errorMessageCallback = function (error) {
+        eventServer.sendEvent('status_message', error.message);
+    }
+
+    eventServer.addListener(
+        'status',
+        function () {
+            DB.getStatus().then(
+                eventServer.sendEvent.bind(eventServer, 'status')
+            );
+        }
+    );
+    eventServer.addListener(
+        'new_db',
+        function (data) {
+            DB.newDB(data).then(
+                eventServer.sendEvent.bind(
+                    eventServer,
+                    'status',
+                    DB.statuses.OPEN
+                ),
+                errorMessageCallback
+            );
+        }
+    );
+    eventServer.addListener(
+        'open_db',
+        function (data) {
+            DB.openDB(data.master_password).then(
+                eventServer.sendEvent.bind(
+                    eventServer,
+                    'status',
+                    DB.statuses.OPEN
+                ),
+                errorMessageCallback
+            );
+        }
+    );
+    eventServer.addListener(
+        'close_db',
+        function (data) {
+            DB.closeDB().then(
+                eventServer.sendEvent.bind(
+                    eventServer,
+                    'status',
+                    DB.statuses.CLOSED
+                ),
+                errorMessageCallback
+            );
+        }
+    );
+
+    eventServer.addIntercept(
+        'status',
+        function(status) {
+            var icons = {19: 'img/lock_19.png', 38: 'img/lock_38.png'};
+            if (status === DB.statuses.OPEN) {
+                icons = {19: 'img/unlock_19.png', 38: 'img/unlock_38.png'};
+            }
+            chrome.browserAction.setIcon({path: icons});
+        }
+    );
 }
 
-eventServer.addListener(
-    'status',
-    function () {
-        DB.getStatus().then(eventServer.sendEvent.bind(eventServer, 'status'));
-    }
-);
-eventServer.addListener(
-    'new_db',
-    function (data) {
-        DB.newDB(data).then(
-            eventServer.sendEvent.bind(eventServer, 'status', DB.statuses.OPEN),
-            errorMessageCallback
-        );
-    }
-);
-eventServer.addListener(
-    'open_db',
-    function (data) {
-        DB.openDB(data.master_password).then(
-            eventServer.sendEvent.bind(eventServer, 'status', DB.statuses.OPEN),
-            errorMessageCallback
-        );
-    }
-);
-eventServer.addListener(
-    'close_db',
-    function (data) {
-        DB.closeDB().then(
-            eventServer.sendEvent.bind(
-                eventServer,
-                'status',
-                DB.statuses.CLOSED
-            ),
-            errorMessageCallback
-        );
-    }
-);
-
-eventServer.addIntercept(
-    'status',
-    function(status) {
-        var icons = {19: 'img/lock_19.png', 38: 'img/lock_38.png'};
-        if (status === DB.statuses.OPEN) {
-            icons = {19: 'img/unlock_19.png', 38: 'img/unlock_38.png'};
+function initStorageChangeEvents(eventServer) {
+    eventServer.addListener(
+        'storage_method',
+        function () {
+            DBStorage.getMethod().then(
+                eventServer.sendEvent.bind(eventServer, 'storage_method')
+            );
         }
-        chrome.browserAction.setIcon({path: icons});
-    }
-);
+    );
+    eventServer.addListener(
+        'set_storage_method',
+        function (data) {
+            DBStorage.setMethod(data.method, data.transfer).then(function () {
+                eventServer.sendEvent('storage_method', data.method);
+                return DB.getStatus();
+            }).then(eventServer.sendEvent.bind(eventServer, 'status'));
+        }
+    );
+}
