@@ -56,8 +56,8 @@ var TabbedArea = TabbedArea || function () {
             }
 
             return (
-                React.DOM.div(null, 
-                    React.DOM.ul(null, options),
+                React.DOM.div( {className:"tabbed_area"}, 
+                    React.DOM.ul( {className:"tabbed_area_selector"}, options),
                     selected
                 )
             );
@@ -66,7 +66,12 @@ var TabbedArea = TabbedArea || function () {
 
     var Tab = React.createClass({displayName: 'Tab',
         render: function () {
-            return React.DOM.div(null, this.props.children);
+            return (
+                React.DOM.div( {className:"tabbed_area_tab"}, 
+                    React.DOM.h2(null, this.props.label),
+                    this.props.children
+                )
+            );
         }
     });
 

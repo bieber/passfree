@@ -1,5 +1,10 @@
-.horizontal_list li {
+.tabbed_area_selector ul {
+    list-style-type:none;
+}
+
+.tabbed_area_selector li {
+    color:blue;
+    text-decoration:underline;
     display: inline;
-    list-style-type: none;
     margin-right: 1em;
 }

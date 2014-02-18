@@ -46,17 +46,20 @@ var Options = Options || function () {
                 <DBManager />;
 
             return (
-                <Tabs id="options_toplevel">
-                    <Tab id="passwords" label="Passwords">
-                        {passwordsTab}
-                    </Tab>
-                    <Tab id="password_types" label="Password Types">
-                        {passwordTypesTab}
-                    </Tab>
-                    <Tab id="settings" label="Settings">
-                        <StorageSettings />
-                    </Tab>
-                </Tabs>
+                <div>
+                    <h1>PassFree Options</h1>
+                    <Tabs id="options_toplevel">
+                        <Tab id="passwords" label="Passwords">
+                            {passwordsTab}
+                        </Tab>
+                        <Tab id="password_types" label="Password Types">
+                            {passwordTypesTab}
+                        </Tab>
+                        <Tab id="settings" label="Settings">
+                            <StorageSettings />
+                        </Tab>
+                    </Tabs>
+                </div>
             );
         }
     });

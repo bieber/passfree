@@ -46,15 +46,18 @@ var Options = Options || function () {
                 DBManager(null );
 
             return (
-                Tabs( {id:"options_toplevel"}, 
-                    Tab( {id:"passwords", label:"Passwords"}, 
-                        passwordsTab
-                    ),
-                    Tab( {id:"password_types", label:"Password Types"}, 
-                        passwordTypesTab
-                    ),
-                    Tab( {id:"settings", label:"Settings"}, 
-                        StorageSettings(null )
+                React.DOM.div(null, 
+                    React.DOM.h1(null, "PassFree Options"),
+                    Tabs( {id:"options_toplevel"}, 
+                        Tab( {id:"passwords", label:"Passwords"}, 
+                            passwordsTab
+                        ),
+                        Tab( {id:"password_types", label:"Password Types"}, 
+                            passwordTypesTab
+                        ),
+                        Tab( {id:"settings", label:"Settings"}, 
+                            StorageSettings(null )
+                        )
                     )
                 )
             );
